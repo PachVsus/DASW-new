@@ -1,0 +1,175 @@
+/* General Styles */
+:root {
+    --primary-color: #ff6347; /* Tomato */
+    --secondary-color: #4682b4; /* SteelBlue */
+    --background-color: #white; /* Khaki */
+    --text-color: #2f4f4f; /* DarkSlateGray */
+    --hover-color: #ff4500; /* OrangeRed */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+nav {
+    color: black;
+    padding: auto;
+    text-align: center;
+    position: sticky;
+    padding-left: auto;
+    padding-right: auto;
+    top: 0;
+    z-index: 1000;
+    font-family: Monocraft;
+}
+
+button {
+    background-color: var(--primary-color);
+    color: red;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    font-family: Monocraft;
+    text-align: justify auto;
+    padding-left: auto;
+    padding-right: auto;
+    padding-inline: auto;
+    text-align: center;
+}
+
+button:hover {
+    background-color: var(--hover-color);
+    transform: scale(1.15);
+}
+
+header {
+    background-color: var(--secondary-color);
+    color: black;
+    padding: 1rem;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    font-family: Monocraft;
+}
+
+header:animation {
+    animation: colorChange 0.8s infinite;
+    transition: color 0s;
+    font-family: Monocraft;
+}
+
+h1 {
+    animation: colorChange 0.8s infinite;
+    transition: color 0s;
+    font-family: Monocraft;
+    background-color: white;
+    padding: 1rem;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    font-family: Monocraft;
+}
+
+@keyframes colorChange {
+    0% { color: red; }
+    10% { color: blue; }
+    20% { color: green; }
+    30% { color: orange; }
+    40% { color: purple; }
+    50% { color: pink; }
+    60% { color: yellow; }
+    70% { color: cyan; }
+    80% { color: magenta; }
+    90% { color: lime; }
+    100% { color: red; }
+}
+
+h2 {
+    background-color: white;
+    color: white;
+    text-align: justify;
+    font-family: Monocraft, Monocraft;
+    margin: 0;
+}
+
+h3 {
+    text-align: justify;
+    font-family: Monocraft;
+    margin: 0;
+    padding: auto;
+
+}
+
+
+p {
+    text-align: justify;
+    font-family: Monocraft;
+    margin: 0;
+}
+
+@keyframes colorChange {
+    0% { color: red; }
+    10% { color: blue; }
+    20% { color: green; }
+    30% { color: orange; }
+    40% { color: purple; }
+    50% { color: pink; }
+    60% { color: yellow; }
+    70% { color: cyan; }
+    80% { color: magenta; }
+    90% { color: lime; }
+    100% { color: red; }
+}
+
+.product-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    font-family: Monocraft;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+footer {
+    background-color: var(--secondary-color);
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    font-family: Monocraft;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+.product-item {
+    background-color: white;
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    font-family: Monocraft;
+}
