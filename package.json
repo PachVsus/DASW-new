@@ -1,0 +1,22 @@
+{
+  "name": "dasw-new",
+  "version": "1.0.0",
+  "description": "Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PachVsus/DASW-new.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/PachVsus/DASW-new/issues"
+  },
+  "homepage": "https://github.com/PachVsus/DASW-new#readme"
+}
