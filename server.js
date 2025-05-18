@@ -25,7 +25,13 @@ app.use('/api/users', userRoutes);
 
 // Ruta para productos
 const productRoutes = require('./routes/product.routes'); // 👈 Importar las rutas
-app.use('/api/products', productRoutes);                  // 👈 Montar la ruta
+app.use('/api/products', productRoutes);   
+
+
+// Ruta para pedidos
+const orderRoutes = require('./routes/order.routes');
+app.use('/api/orders', orderRoutes);
+// 👈 Montar la ruta
 
 
 // Conectar a MongoDB
