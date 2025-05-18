@@ -1,6 +1,6 @@
 // public/js/login.js
 document.addEventListener('DOMContentLoaded', () => {
-  const API_BASE = 'http://localhost:5000/api';           // mismo host => ruta relativa
+  const API_BASE = 'http://localhost:5000/api';           // Puedes cambiar a '/api' en producción
   const form = document.getElementById('loginForm');
 
   form.addEventListener('submit', async (e) => {
@@ -16,20 +16,20 @@ document.addEventListener('DOMContentLoaded', () => {
         body   : JSON.stringify({ email, password })
       });
 
-      const data = await res.json();           // siempre parsea la respuesta
+      const data = await res.json();
 
-      if (!res.ok) {                           // 400 ó 401
+      if (!res.ok) {
         throw new Error(data.error || data.message || 'Credenciales inválidas');
       }
 
       // ------- GUARDAR JWT -------
-      const token = data.token;                // back responde { token: '...'}
+      const token = data.token;
       localStorage.setItem('token', token);
 
-      // ------- DECODIFICAR USER ID para poder llamar /api/users/:id después -------
+      // ------- DECODIFICAR USER ID -------
       const payloadBase64 = token.split('.')[1];
       const payload       = JSON.parse(atob(payloadBase64));
-      localStorage.setItem('userId', payload.userId);   // mismo nombre que backend
+      localStorage.setItem('userId', payload.userId);
 
       // ------- REDIRECCIÓN -------
       await Swal.fire({
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showConfirmButton: false
       });
 
-      window.location.href = 'products.html';
+      window.location.href = 'products-index.html';  // ✅ Redirección corregida
     }
     catch (err) {
       console.error(err);

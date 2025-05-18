@@ -1,15 +1,11 @@
-// /paginas/js/detalle.js
-
 document.addEventListener('DOMContentLoaded', () => {
   const API   = '/api';
   const token = localStorage.getItem('token');
   const id    = new URLSearchParams(location.search).get('id');
   const card  = document.getElementById('productCard');
 
-  // Redirige si no hay sesión o id de producto
   if (!token || !id) return location.href = 'login.html';
 
-  // Obtiene datos del producto
   fetch(`${API}/products/${id}`, {
     headers: { Authorization: `Bearer ${token}` }
   })
@@ -19,9 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
       card.innerHTML = `<p class="text-center text-red-600">${err}</p>`;
     });
 
-  // Renderiza la vista del producto
   function render(p) {
-    const img = p.sceneViewer || '/img/placeholder.jpg';
+    const img = p.sceneViewer || p.imageUrl || '/img/placeholder.jpg';
 
     card.innerHTML = `
       <h2 class="text-2xl font-bold mb-4">${p.description}</h2>
@@ -48,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
       .addEventListener('click', () => addToCart(p._id));
   }
 
-  // Añadir producto al carrito en localStorage
   function addToCart(productId) {
     const qty = parseInt(document.getElementById('qty').value) || 1;
     let cart = JSON.parse(localStorage.getItem('cart') || '[]');
@@ -61,18 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     localStorage.setItem('cart', JSON.stringify(cart));
-    updateBadge();
-
     Swal.fire('Añadido', 'Producto agregado al carrito', 'success');
-  }
 
-  // Contador del carrito (ícono superior)
-  function updateBadge() {
-    const badge = document.getElementById('cart-count');
-    if (!badge) return;
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    badge.textContent = cart.reduce((total, item) => total + item.qty, 0);
+    // El badge ya se actualiza desde nav-session.js
   }
-
-  updateBadge(); // al cargar la página
 });
