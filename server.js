@@ -14,6 +14,9 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+
+
+
 // Ruta de prueba básica
 app.get('/', (req, res) => {
     res.send('API funcionando correctamente');
