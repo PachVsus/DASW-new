@@ -8,6 +8,7 @@ const isAdmin = require('../middleware/isAdmin'); // si lo usas
 router.get('/', authMiddleware, productController.getProducts);
 router.get('/:id', authMiddleware, productController.getProductById);
 
+
 // 🔐 Rutas que requieren autenticación + ser admin
 router.post('/', authMiddleware, isAdmin, productController.createProduct);
 router.put('/:id', authMiddleware, isAdmin, productController.updateProduct);
