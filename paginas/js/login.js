@@ -1,6 +1,6 @@
 // public/js/login.js
 document.addEventListener('DOMContentLoaded', () => {
-  const API_BASE = '/api';             // mismo host => ruta relativa
+  const API_BASE = 'http://localhost:5000/api';           // mismo host => ruta relativa
   const form = document.getElementById('loginForm');
 
   form.addEventListener('submit', async (e) => {
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showConfirmButton: false
       });
 
-      window.location.href = 'products_index.html';
+      window.location.href = 'products.html';
     }
     catch (err) {
       console.error(err);

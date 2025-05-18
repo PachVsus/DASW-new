@@ -9,24 +9,27 @@ const userSchema = new mongoose.Schema(
     RFC       : { type: String, required: true, unique: true },
     cardNumber: { type: String, required: true, unique: true },
 
-    /* NEW ➜ role */
+    // Rol de usuario
     role      : {
       type   : String,
       enum   : ['admin', 'client'],
       default: 'client'
     }
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    versionKey: false // ← opcional: elimina "__v"
+  }
 );
 
-/* ---------- Hash automático ---------- */
+// 🔐 Hash automático antes de guardar
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
-/* ---------- Método para comparar ---------- */
+// 🔍 Método para comparar contraseñas
 userSchema.methods.comparePassword = function (plainPwd) {
   return bcrypt.compare(plainPwd, this.password);
 };

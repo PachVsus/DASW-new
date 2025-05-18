@@ -19,6 +19,11 @@ app.get('/', (req, res) => {
     res.send('API funcionando correctamente');
 });
 
+// Ruta para registrar usuarios
+const userRoutes = require('./routes/user.routes');
+app.use('/api/users', userRoutes);
+
+
 // Conectar a MongoDB
 mongoose.connect(process.env.DB_URI, {
     useNewUrlParser: true,

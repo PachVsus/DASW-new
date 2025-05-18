@@ -1,6 +1,6 @@
 // /paginas/js/register.js
 document.addEventListener('DOMContentLoaded', () => {
-  const API = '/api';                         // misma raíz que en login.js
+const API = 'http://localhost:5000/api'; // O IP local si accedes desde otro dispositivo
   const form = document.getElementById('registerForm');
 
   form.addEventListener('submit', async (e) => {
