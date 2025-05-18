@@ -23,6 +23,10 @@ app.get('/', (req, res) => {
 const userRoutes = require('./routes/user.routes');
 app.use('/api/users', userRoutes);
 
+// Ruta para productos
+const productRoutes = require('./routes/product.routes'); // 👈 Importar las rutas
+app.use('/api/products', productRoutes);                  // 👈 Montar la ruta
+
 
 // Conectar a MongoDB
 mongoose.connect(process.env.DB_URI, {
