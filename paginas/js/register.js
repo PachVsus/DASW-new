@@ -1,6 +1,5 @@
-// /paginas/js/register.js
 document.addEventListener('DOMContentLoaded', () => {
-const API = 'http://localhost:5000/api'; // O IP local si accedes desde otro dispositivo
+  const API = 'http://localhost:5000/api'; // ✅ Cambiar a '/api' en producción si lo deseas
   const form = document.getElementById('registerForm');
 
   form.addEventListener('submit', async (e) => {
@@ -14,7 +13,7 @@ const API = 'http://localhost:5000/api'; // O IP local si accedes desde otro dis
     const RFC         = document.getElementById('rfc').value.trim().toUpperCase();
     const cardNumber  = document.getElementById('cardNumber').value.trim();
 
-    // --- Validación básica en front ---
+    // --- Validación básica ---
     if (password !== password2) {
       Swal.fire('Error', 'Las contraseñas no coinciden', 'error');
       return;
@@ -33,7 +32,6 @@ const API = 'http://localhost:5000/api'; // O IP local si accedes desde otro dis
         throw new Error(data.error || data.message || 'Error al registrar');
       }
 
-      // Exitoso
       await Swal.fire({
         icon : 'success',
         title: 'Cuenta creada',
@@ -42,7 +40,6 @@ const API = 'http://localhost:5000/api'; // O IP local si accedes desde otro dis
         showConfirmButton: false
       });
 
-      // Redirigir a login
       window.location.href = 'login.html';
     }
     catch (err) {

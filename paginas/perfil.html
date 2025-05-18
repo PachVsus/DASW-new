@@ -16,19 +16,23 @@
 
 <body class="bg-gray-100 flex flex-col min-h-screen">
 
-  <!-- ===== NAVBAR (mismo que en products) ===== -->
+  <!-- ===== NAVBAR ===== -->
   <header class="bg-white shadow-md py-4 sticky top-0 z-50">
     <div class="container mx-auto flex justify-between items-center px-6">
-      <h1 class="text-2xl font-bold">Meshify</h1>
+      <h1 class="text-2xl font-bold text-blue-600">Meshify</h1>
       <nav class="hidden md:flex space-x-6">
         <a href="home.html">Inicio</a>
         <a href="products-index.html">Productos</a>
         <a href="about.html">Acerca de</a>
         <a href="contacto.html">Contacto</a>
-        <a href="perfil.html" class="font-semibold text-blue-600">Cuenta</a>
-        <a href="register.html">Registrarse</a>
-        <a href="cart.html">Carrito</a>
-        <button id="logoutBtn" class="ml-4 hover:underline">Cerrar sesión</button>
+        <a href="perfil.html" class="font-semibold text-blue-600 authOnly">Cuenta</a>
+        <a href="register.html" class="guestOnly">Registrarse</a>
+        <a href="login.html" class="guestOnly">Login</a>
+        <button id="logoutBtn" class="authOnly hover:underline">Cerrar sesión</button>
+        <a href="cart.html" class="authOnly flex items-center">
+          <i data-feather="shopping-cart"></i>
+          <span id="cart-count" class="ml-1 text-sm">0</span>
+        </a>
       </nav>
 
       <button id="menu-toggle" class="md:hidden text-gray-600">
@@ -36,16 +40,17 @@
       </button>
     </div>
 
-    <!-- Menú mobile -->
+    <!-- Menú móvil -->
     <ul id="menu" class="md:hidden hidden flex flex-col bg-white px-6 pb-4 space-y-2">
       <li><a href="home.html">Inicio</a></li>
       <li><a href="products-index.html">Productos</a></li>
       <li><a href="about.html">Acerca de</a></li>
       <li><a href="contacto.html">Contacto</a></li>
-      <li><a href="perfil.html" class="font-semibold text-blue-600">Cuenta</a></li>
-      <li><a href="register.html">Registrarse</a></li>
-      <li><a href="cart.html">Carrito</a></li>
-      <li><button id="logoutBtnMobile" class="hover:underline">Cerrar sesión</button></li>
+      <li class="authOnly"><a href="perfil.html" class="font-semibold text-blue-600">Cuenta</a></li>
+      <li class="guestOnly"><a href="register.html">Registrarse</a></li>
+      <li class="guestOnly"><a href="login.html">Login</a></li>
+      <li class="authOnly"><a href="cart.html">Carrito</a></li>
+      <li class="authOnly"><button id="logoutBtnMobile" class="hover:underline">Cerrar sesión</button></li>
     </ul>
   </header>
 
@@ -66,7 +71,8 @@
     </div>
   </footer>
 
-  <!-- Script -->
+  <!-- Scripts -->
+  <script src="js/nav-session.js"></script>
   <script src="js/perfil.js"></script>
 </body>
 </html>
