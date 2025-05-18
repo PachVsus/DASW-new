@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crear cuenta • Meshify</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- SweetAlert2 CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+  <!-- Tu hoja de estilos global -->
+  <link rel="stylesheet" href="../css/main_styles.css">
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+  <!-- CARD -->
+  <div class="bg-white shadow-md rounded-lg p-8 w-full max-w-lg">
+    <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">
+      Crea tu cuenta
+    </h2>
+
+    <form id="registerForm" class="grid gap-4">
+      <!-- Nombre -->
+      <input type="text" id="name" placeholder="Nombre completo"
+             class="px-4 py-2 border rounded-md" required>
+
+      <!-- Correo -->
+      <input type="email" id="email" placeholder="Correo electrónico"
+             class="px-4 py-2 border rounded-md" required>
+
+      <!-- Contraseña -->
+      <input type="password" id="password" placeholder="Contraseña (mín. 6 caracteres)"
+             class="px-4 py-2 border rounded-md" required minlength="6">
+
+      <!-- Confirmar contraseña -->
+      <input type="password" id="password2" placeholder="Repite la contraseña"
+             class="px-4 py-2 border rounded-md" required minlength="6">
+
+      <!-- RFC -->
+      <input type="text" id="rfc" placeholder="RFC"
+             class="px-4 py-2 border rounded-md" required maxlength="13">
+
+      <!-- Nº tarjeta -->
+      <input type="text" id="cardNumber" placeholder="Número de tarjeta (16 dígitos)"
+             class="px-4 py-2 border rounded-md" required pattern="\d{16}">
+
+      <button type="submit"
+              class="bg-black text-white py-2 rounded-md hover:bg-gray-800 transition">
+        Registrarme
+      </button>
+    </form>
+
+    <p class="text-center text-sm mt-4">
+      ¿Ya tienes cuenta?
+      <a href="login.html" class="text-blue-600 hover:underline">Inicia sesión</a>
+    </p>
+  </div>
+
+  <!-- Lógica -->
+  <script src="js/register.js"></script>
+</body>
+</html>
