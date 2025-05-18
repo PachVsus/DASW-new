@@ -24,3 +24,13 @@ const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
     console.log(`Running server on http://localhost:${PORT}`);
 });
+
+// servir archivos estáticos
+app.use(express.static('paginas'));   // o 'paginas' si usas ese nombre
+
+
+const productRoutes = require('./routes/product.routes');
+app.use('/api/products', productRoutes);
+
+const orderRoutes = require('./routes/order.routes');
+app.use('/api/orders', orderRoutes);
