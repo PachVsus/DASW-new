@@ -1,72 +1,49 @@
-// /paginas/js/perfil.js
 document.addEventListener('DOMContentLoaded', () => {
-  const API   = '/api';
   const token = localStorage.getItem('token');
   const userId = localStorage.getItem('userId');
+  const container = document.getElementById('profileCard');
 
-  /* ---------- Protección ---------- */
+  // Validar sesión
   if (!token || !userId) {
-    window.location.href = 'login.html';
+    Swal.fire('Sesión no válida', 'Inicia sesión primero', 'warning')
+      .then(() => window.location.href = 'login.html');
     return;
   }
 
-  /* ---------- DOM refs ---------- */
-  const card       = document.getElementById('profileCard');
-  const logoutBtns = [document.getElementById('logoutBtn'),
-                      document.getElementById('logoutBtnMobile')];
-
-  /* ---------- Lógica ---------- */
-  async function loadProfile() {
-    try {
-      const res = await fetch(`${API}/users/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-
-      if (res.status === 401 || res.status === 400) {
-        localStorage.clear();
-        return window.location.href = 'login.html';
-      }
-
-      const u = await res.json();
-
-      card.innerHTML = `
-        <div class="text-center">
-          <i data-feather="user" class="w-16 h-16 mx-auto text-gray-500"></i>
-          <h3 class="text-xl font-semibold mt-2">${u.name}</h3>
-        </div>
-
-        <div>
-          <p><span class="font-semibold">Correo:</span> ${u.email}</p>
-          <p><span class="font-semibold">RFC:</span> ${u.RFC}</p>
-          <p><span class="font-semibold">Tarjeta:</span> ${u.cardNumber}</p>
-        </div>
-
-        <button id="editBtn"
-                class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 mt-4">
-          Editar datos (✱ futuro)
-        </button>
-      `;
-      feather.replace();  // refrescar icono
-    } catch (err) {
-      console.error(err);
-      card.innerHTML =
-        '<p class="text-center text-red-600">Error al cargar perfil</p>';
+  // Fetch del perfil
+  fetch(`/api/users/${userId}`, {
+    headers: {
+      'Authorization': `Bearer ${token}`
     }
-  }
-
-  /* ---------- Logout ---------- */
-  logoutBtns.forEach(btn => {
-    if (btn) btn.addEventListener('click', () => {
-      localStorage.clear();
-      window.location.href = 'login.html';
+  })
+    .then(res => {
+      if (!res.ok) throw new Error('No se pudo obtener el perfil');
+      return res.json();
+    })
+    .then(user => {
+      container.innerHTML = `
+        <div class="text-center">
+          <h3 class="text-xl font-bold mb-2">${user.name}</h3>
+          <p><strong>Correo:</strong> ${user.email}</p>
+          <p><strong>RFC:</strong> ${user.RFC}</p>
+          <p><strong>Tarjeta:</strong> ${user.cardNumber}</p>
+          <p><strong>Rol:</strong> ${user.role}</p>
+        </div>
+      `;
+    })
+    .catch(err => {
+      console.error(err);
+      container.innerHTML = `<div class="text-red-500 text-center">Error: ${err.message}</div>`;
     });
+
+  // Cerrar sesión
+  document.getElementById('logoutBtn')?.addEventListener('click', () => {
+    localStorage.clear();
+    window.location.href = 'login.html';
   });
 
-  /* ---------- Menú mobile ---------- */
-  document.getElementById('menu-toggle').addEventListener('click', () => {
-    document.getElementById('menu').classList.toggle('hidden');
+  document.getElementById('logoutBtnMobile')?.addEventListener('click', () => {
+    localStorage.clear();
+    window.location.href = 'login.html';
   });
-
-  feather.replace();
-  loadProfile();
 });
