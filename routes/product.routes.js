@@ -2,16 +2,15 @@ const express = require('express');
 const router = express.Router();
 const productController = require('../controllers/product.controller');
 const authMiddleware = require('../middleware/auth');
-const isAdmin = require('../middleware/isAdmin');
+const isAdmin = require('../middleware/isAdmin'); // si lo usas
 
-router.post('/',     auth, isAdmin, productCtrl.createProduct);
-router.put('/:id',   auth, isAdmin, productCtrl.updateProduct);
-router.delete('/:id',auth, isAdmin, productCtrl.deleteProduct);
-
-router.post('/', authMiddleware, productController.createProduct);
+// 📦 Rutas públicas o protegidas con token
 router.get('/', authMiddleware, productController.getProducts);
 router.get('/:id', authMiddleware, productController.getProductById);
-router.put('/:id', authMiddleware, productController.updateProduct);
-router.delete('/:id', authMiddleware, productController.deleteProduct);
+
+// 🔐 Rutas que requieren autenticación + ser admin
+router.post('/', authMiddleware, isAdmin, productController.createProduct);
+router.put('/:id', authMiddleware, isAdmin, productController.updateProduct);
+router.delete('/:id', authMiddleware, isAdmin, productController.deleteProduct);
 
 module.exports = router;

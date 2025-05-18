@@ -7,19 +7,30 @@
   <link rel="stylesheet" href="../css/main_styles.css" />
 </head>
 <body>
-  <h1>Lista de Productos</h1>
+  <header>
+    <h1>Lista de Productos</h1>
+    <button id="logoutBtn">Cerrar sesión</button>
+    <a href="home.html">
+        <button id="homeBtn">Inicio</button>
+    </a>
+  </header>
 
-  <input type="search" id="searchInput" placeholder="Buscar producto..." />
-  <button id="searchBtn">Buscar</button>
+  <!-- Buscador -->
+  <section>
+    <input type="search" id="searchInput" placeholder="Buscar producto..." />
+  </section>
 
-  <div id="productosContainer"></div>
+  <!-- Contenedor de productos -->
+  <section id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
+    <!-- Aquí se insertarán los productos con JS -->
+  </section>
 
-  <div id="paginacion">
-    <button id="prevBtn">Anterior</button>
-    <span id="pageInfo"></span>
-    <button id="nextBtn">Siguiente</button>
+  <!-- Paginación -->
+  <div id="pagination" class="text-center my-4">
+    <!-- Botones de página se generan con JS -->
   </div>
 
+  <!-- Scripts -->
   <script src="../frontend/js/auth.js"></script>
   <script src="../frontend/js/products.js"></script>
 </body>
