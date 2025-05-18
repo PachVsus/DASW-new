@@ -1,0 +1,44 @@
+<script>
+  document.getElementById('paymentForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const card = document.getElementById('cardNumber').value.trim();
+    const expiry = document.getElementById('expiry').value.trim();
+    const cvv = document.getElementById('cvv').value.trim();
+    const token = localStorage.getItem('token');
+
+    if (!name || !card || !expiry || !cvv) {
+      alert('Por favor, completa todos los campos');
+      return;
+    }
+
+    try {
+      const res = await fetch('http://localhost:5000/api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({
+          items: [
+            {
+              product: "REEMPLAZA_CON_ID_REAL", // ← Inserta un ID de producto existente
+              qty: 1
+            }
+          ]
+        })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.error || 'Error al registrar el pedido');
+
+      document.getElementById('successMessage').style.display = 'block';
+      document.getElementById('paymentForm').reset();
+    } catch (err) {
+      console.error(err);
+      alert('Error al registrar el pedido: ' + err.message);
+    }
+  });
+</script>

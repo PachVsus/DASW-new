@@ -38,7 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function render() {
     const query = searchBox.value.toLowerCase();
     const filtered = products.filter((p) =>
-      p.description?.toLowerCase().includes(query)
+      p.nombre?.toLowerCase().includes(query) ||
+      p.descripcion?.toLowerCase().includes(query)
     );
 
     const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));

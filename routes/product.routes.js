@@ -12,5 +12,6 @@ router.get('/:id', authMiddleware, productController.getProductById);
 router.post('/', authMiddleware, isAdmin, productController.createProduct);
 router.put('/:id', authMiddleware, isAdmin, productController.updateProduct);
 router.delete('/:id', authMiddleware, isAdmin, productController.deleteProduct);
+router.patch('/:id', authMiddleware, isAdmin, productController.updateProduct); // ✅ agregado
 
 module.exports = router;
