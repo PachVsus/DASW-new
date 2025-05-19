@@ -1,6 +1,6 @@
-// public/js/login.js
+// /public/js/login.js
 document.addEventListener('DOMContentLoaded', () => {
-  const API_BASE = 'http://localhost:5000/api';           // Puedes cambiar a '/api' en producción
+  const API_BASE = '/api';  // En producción Render+Vercel cambia a URL absoluta si lo prefieres
   const form = document.getElementById('loginForm');
 
   form.addEventListener('submit', async (e) => {
@@ -22,16 +22,16 @@ document.addEventListener('DOMContentLoaded', () => {
         throw new Error(data.error || data.message || 'Credenciales inválidas');
       }
 
-      // ------- GUARDAR JWT -------
+      /* ---------- Guardar JWT ---------- */
       const token = data.token;
       localStorage.setItem('token', token);
 
-      // ------- DECODIFICAR USER ID -------
-      const payloadBase64 = token.split('.')[1];
-      const payload       = JSON.parse(atob(payloadBase64));
+      /* ---------- Decodificar payload ---------- */
+      const payload = JSON.parse(atob(token.split('.')[1]));
       localStorage.setItem('userId', payload.userId);
+      localStorage.setItem('role',   payload.role);  
 
-      // ------- REDIRECCIÓN -------
+      /* ---------- Feedback & redirección ---------- */
       await Swal.fire({
         icon : 'success',
         title: '¡Bienvenido!',
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showConfirmButton: false
       });
 
-      window.location.href = 'products-index.html';  // ✅ Redirección corregida
+      window.location.href = 'products-index.html';
     }
     catch (err) {
       console.error(err);

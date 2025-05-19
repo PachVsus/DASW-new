@@ -7,15 +7,21 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   const token = localStorage.getItem('token');
+  const role  = localStorage.getItem('role');
 
-  /* ---------- Mostrar / ocultar links ---------- */
+  // 👤 Usuario logueado
   if (token) {
     document.querySelectorAll('.guestOnly').forEach(el => el.remove());
   } else {
     document.querySelectorAll('.authOnly').forEach(el => el.remove());
   }
 
-  /* ---------- Contador de carrito ---------- */
+  // 🛡️ Solo admin puede ver adminOnly
+  if (role !== 'admin') {
+    document.querySelectorAll('.adminOnly').forEach(el => el.remove());
+  }
+
+  // 🛒 Actualizar contador carrito
   updateCartBadge();
 
   function updateCartBadge() {
