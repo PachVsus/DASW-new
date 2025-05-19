@@ -11,15 +11,16 @@ const {
 } = require('../controllers/user.controller');
 
 const authMiddleware = require('../middleware/auth');
+const isAdmin = require('../middleware/admin'); // ✅ nuevo middleware
 
 // 📥 Registro y login públicos
-router.post('/', createUser);        // Registro de usuario
-router.post('/login', loginUser);    // Login
+router.post('/', createUser);
+router.post('/login', loginUser);
 
-// 🔒 Rutas protegidas con JWT
-router.get('/', authMiddleware, getUsers);
-router.get('/:id', authMiddleware, getUserById);
-router.put('/:id', authMiddleware, updateUser);
-router.delete('/:id', authMiddleware, deleteUser);
+// 🔒 Rutas protegidas con JWT y rol admin
+router.get('/',     authMiddleware, isAdmin, getUsers);     // solo admin
+router.get('/:id',  authMiddleware, getUserById);           // usuario logueado puede ver su perfil
+router.put('/:id',  authMiddleware, isAdmin, updateUser);   // solo admin
+router.delete('/:id', authMiddleware, isAdmin, deleteUser); // solo admin
 
 module.exports = router;
