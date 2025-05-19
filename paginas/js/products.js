@@ -1,107 +1,107 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const API_URL = '/api/products';
   const token = localStorage.getItem('token');
+  const userId = localStorage.getItem('userId');
 
-  if (!token) {
-    window.location.href = 'login.html';
+  // Validar sesión
+  if (!token || !userId) {
+    Swal.fire('Sesión no válida', 'Inicia sesión primero', 'warning')
+      .then(() => window.location.href = 'login.html');
     return;
   }
 
-  const grid = document.getElementById('productsGrid');
-  const searchBox = document.getElementById('searchInput');
-  const pagDiv = document.getElementById('pagination');
+  const productList = document.getElementById('productList');
+  const searchInput = document.getElementById('searchInput');
+  const pagination = document.getElementById('pagination');
 
-  let products = [];
   let currentPage = 1;
-  const PAGE_SIZE = 9;
+  let totalPages = 1;
+  let searchTerm = '';
 
-  async function fetchProducts() {
-    try {
-      const res = await fetch(`${API_URL}?page=1&limit=100`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-
-      if (!res.ok) {
-        localStorage.clear();
-        return (window.location.href = 'login.html');
-      }
-
-      const data = await res.json();
-      products = data.productos || [];
-      render();
-    } catch (err) {
-      console.error('Error:', err);
-      Swal.fire('Error', 'No se pudieron cargar los productos', 'error');
-    }
-  }
-
-  function render() {
-    const query = searchBox.value.toLowerCase();
-    const filtered = products.filter((p) =>
-      p.nombre?.toLowerCase().includes(query) ||
-      p.descripcion?.toLowerCase().includes(query)
-    );
-
-    const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-    if (currentPage > totalPages) currentPage = totalPages;
-
-    const start = (currentPage - 1) * PAGE_SIZE;
-    const end = start + PAGE_SIZE;
-    const pageItems = filtered.slice(start, end);
-
-    grid.innerHTML = '';
-    if (!pageItems.length) {
-      grid.innerHTML =
-        '<p class="col-span-full text-center text-gray-500">No hay productos disponibles.</p>';
-    } else {
-      pageItems.forEach((prod) => grid.appendChild(cardTemplate(prod)));
+  const renderProducts = (productos) => {
+    productList.innerHTML = '';
+    if (productos.length === 0) {
+      productList.innerHTML = `<div class="text-center text-gray-500 col-span-3">No hay productos disponibles</div>`;
+      return;
     }
 
-    renderPagination(totalPages);
-  }
+    productos.forEach(product => {
+      const card = document.createElement('div');
+      card.className = 'bg-white p-4 rounded shadow text-center';
 
-  function cardTemplate(prod) {
-    const div = document.createElement('div');
-    div.className = 'bg-white shadow-md rounded-lg p-4 flex flex-col';
-    div.innerHTML = `
-      <a href="detalle.html?id=${prod._id}" class="text-xl font-semibold mb-2 hover:underline block">
-        ${prod.description || 'Producto'}
-      </a>
-      <img src="${prod.imageUrl || '/img/placeholder.jpg'}"
-           alt="${prod.description || ''}"
-           class="w-full h-48 object-cover rounded-lg mb-4">
-      <p class="text-gray-700 mb-2">${prod.description || 'Sin descripción'}</p>
-      <p class="text-blue-600 font-bold mb-2">$${prod.price || '0.00'}</p>
-      <a href="detalle.html?id=${prod._id}"
-         class="mt-auto bg-blue-600 text-white py-2 text-center rounded hover:bg-blue-700 block">
-        Ver detalle
-      </a>
-    `;
-    return div;
-  }
+      card.innerHTML = `
+        <img src="${product.imageUrl}" alt="${product.nombre}" class="w-full h-48 object-cover mb-2 rounded">
+        <h3 class="text-lg font-bold">${product.nombre}</h3>
+        <p class="text-sm text-gray-500 mb-2">${product.description}</p>
+        <p class="font-semibold mb-2">$${product.price}</p>
+        <a href="${product.sceneViewer}" target="_blank" class="text-blue-500 underline">Vista 3D</a>
+      `;
 
-  function renderPagination(totalPages) {
-    pagDiv.innerHTML = '';
+      productList.appendChild(card);
+    });
+  };
+
+  const renderPagination = () => {
+    pagination.innerHTML = '';
+
     for (let i = 1; i <= totalPages; i++) {
-      const btn = document.createElement('button');
-      btn.textContent = i;
-      btn.className = `px-3 py-1 rounded mx-1 ${
-        i === currentPage
-          ? 'bg-blue-600 text-white'
-          : 'bg-gray-200 hover:bg-gray-300'
-      }`;
-      btn.addEventListener('click', () => {
+      const pageBtn = document.createElement('button');
+      pageBtn.textContent = i;
+      pageBtn.className = `mx-1 px-3 py-1 rounded ${i === currentPage ? 'bg-blue-600 text-white' : 'bg-gray-200'}`;
+      pageBtn.addEventListener('click', () => {
         currentPage = i;
-        render();
+        loadProducts();
       });
-      pagDiv.appendChild(btn);
+      pagination.appendChild(pageBtn);
     }
-  }
+  };
 
-  searchBox.addEventListener('input', () => {
+  const loadProducts = () => {
+    let url = `/api/products?page=${currentPage}`;
+    if (searchTerm) url += `&nombre=${encodeURIComponent(searchTerm)}`;
+
+    fetch(url, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+      .then(async res => {
+        if (res.status === 401 || res.status === 403) {
+          localStorage.clear();
+          Swal.fire('Sesión expirada', 'Inicia sesión nuevamente', 'info')
+            .then(() => window.location.href = 'login.html');
+          return;
+        }
+        if (!res.ok) throw new Error(await res.text());
+        return res.json();
+      })
+      .then(data => {
+        if (!data) return;
+        renderProducts(data.productos);
+        totalPages = data.totalPages;
+        renderPagination();
+      })
+      .catch(err => {
+        console.error('Error al obtener productos:', err.message);
+        productList.innerHTML = `<div class="text-center text-red-500 col-span-3">Error al cargar productos</div>`;
+      });
+  };
+
+  // Buscar productos
+  searchInput?.addEventListener('input', (e) => {
+    searchTerm = e.target.value.trim();
     currentPage = 1;
-    render();
+    loadProducts();
   });
 
-  fetchProducts();
+  // Cargar al iniciar
+  loadProducts();
+
+  // Logout botones
+  document.getElementById('logoutBtn')?.addEventListener('click', () => {
+    localStorage.clear();
+    window.location.href = 'login.html';
+  });
+
+  document.getElementById('logoutBtnMobile')?.addEventListener('click', () => {
+    localStorage.clear();
+    window.location.href = 'login.html';
+  });
 });
